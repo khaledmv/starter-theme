@@ -4,8 +4,8 @@
     "theme_name": "Starter theme",
     "theme_version": "1.0.0",
     "theme_author": "Shopify",
-    "theme_documentation_url": "https://github.com/Shopify/starter-theme",
-    "theme_support_url": "https://github.com/Shopify/starter-theme/issues"
+    "theme_documentation_url": "https:\/\/github.com\/Shopify\/starter-theme",
+    "theme_support_url": "https:\/\/github.com\/Shopify\/starter-theme\/issues"
   },
   {
     "name": "Colors",
@@ -59,7 +59,7 @@
         "type": "image_picker",
         "id": "share_image",
         "label": "Image",
-        "info": "Shown when sharing a link on social media. [Learn more](https://help.shopify.com/manual/using-themes/troubleshooting/showing-social-media-thumbnail-images/) about image thumbnails."
+        "info": "Shown when sharing a link on social media. [Learn more](https:\/\/help.shopify.com\/manual\/using-themes\/troubleshooting\/showing-social-media-thumbnail-images\/) about image thumbnails."
       },
       {
         "type": "header",

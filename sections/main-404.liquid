@@ -1,0 +1,58 @@
+
+{{ '404.css' | asset_url | stylesheet_tag }}
+
+<!-- <h1> {{ 'general.404.title' | t }} </h1>
+<p> {{ 'general.404.subtext_html' | t }} </p> -->
+
+<div class="container-404">
+      
+    <h1> {{ section.settings.title }} </h1>
+    <p> {{ section.settings.subtext_title }}</p>
+
+    {% if section.secttings.redirect_url == blank %}
+      {% assign shop_url = shop.secure_url %}
+    {% else %}
+     {% assign shop_url = section.settings.redirect_url %}
+    {% endif %}
+    <a href="{{ shop_url }}" class="redirect_url"> {{ section.settings.redirect-label }}</a>
+</div>
+
+
+
+
+
+{% schema %}
+{
+  "name": "Template 404",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id":"title",
+      "default":"404",
+      "label": "404 Heading title"
+    },
+
+    {
+      "type": "text",
+      "id": "subtext_title",
+      "default": " The page you're looking for doesn't match",
+      "label": "404 Subtitle"
+    },
+
+    {
+      "type": "text",
+      "id": "redirect-label",
+      "default": " Back to Home",
+      "label": "Button Label"
+    },
+
+    {
+      "type": "url",
+      "id": "redirect_url",
+      "label": "Select redirect url"
+    }
+
+  ]
+}
+{% endschema %}

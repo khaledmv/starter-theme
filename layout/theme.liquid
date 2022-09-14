@@ -30,9 +30,6 @@
     <meta name="description" content="{{ page_description | escape }}">
   {%- endif -%}
 
-  {% include 'social-meta-tags' %}
-  {% include 'style-tags', layout: 'theme' %}
-  {% include 'css-variables' %}
 
   <script>
     document.documentElement.className = document.documentElement.className.replace('no-js', '');
@@ -47,18 +44,18 @@
     };
   </script>
 
-  {% include 'script-tags', layout: 'theme' %}
-
   {{ content_for_header }}
+
+  {{ 'theme11.css' | asset_url | stylesheet_tag  }}
 </head>
 
 <body id="{{ page_title | handle }}" class="template-{{ template.name | handle }}">
 
-  <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+  <a class="in-page-link hidden visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
   {% section 'header' %}
 
-  <main role="main" id="MainContent">
+  <main role="main" id="MainContent" class="container">
     {{ content_for_layout }}
   </main>
 

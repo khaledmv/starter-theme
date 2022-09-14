@@ -1,0 +1,61 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap");
+:root {
+  --text-color:hsl(0, 4%, 11%);
+  --text-small:1.2rem;
+  --text-normal: 1.8rem;
+  --text-medium:2.4rem;
+  --text-large:3.2rem;
+  --header-small:3.8rem;
+  --header-midium:4.4rem;
+  --header-large:5.2rem;
+  --header--bigger:6.4rem;
+}
+
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  font-size: 1.8rem;
+  color: var(--text-color);
+  line-height: 1.5;
+}
+
+ul, li {
+  list-style: none;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  text-decoration: none;
+}
+
+.hidden {
+  display: none;
+}
+
+section {
+  width: 100%;
+}
+
+.container {
+  margin: 0 auto;
+  width: min(90%, 1140px);
+}
+
+/*# sourceMappingURL=theme11.css.map */
