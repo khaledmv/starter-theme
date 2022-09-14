@@ -1,0 +1,22 @@
+// {
+//   "name": "Template Blog",
+//   "sections": {
+//     "main": {
+//       "type": "main-blog"
+//     }
+//   },
+//   "order": [
+//     "main"
+//   ]
+// }
+{
+  "name": "Template Blog",
+  "sections": {
+    "main": {
+      "type": "main-blog"
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

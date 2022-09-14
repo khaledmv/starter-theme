@@ -1,0 +1,25 @@
+
+.article__section{
+  width: 100%;
+  background-color: #f7fcfc;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding: 3rem 0;
+}
+.article{
+ 
+  &__image{
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  &__data{
+    margin: 1rem 0;
+    font-size:var(--text-small);
+    text-transform: uppercase;
+    &-author{
+      margin:2rem 0;
+    }
+  }
+ 
+}

@@ -1,0 +1,30 @@
+
+.container-404{
+  min-height: 100vh;
+  max-width: 90vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align:center;
+}
+
+h1{
+  font-size: 6.4rem;
+  text-align: center;
+  color:hsla(0, 94%, 57%, 0.873);
+  margin:0 auto;
+}
+
+.redirect_url{
+  margin-top: 2rem;
+  border-radius: .6rem;
+  padding: 1.4rem 4rem;
+  color:#fff;
+  background: hsl(120, 72%, 28%);
+  font-size: 1.5rem;
+}
+
+.redirect_url:hover{
+  background-color: hsl(120, 72%, 40%);
+}

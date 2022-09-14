@@ -1,0 +1,31 @@
+.container-404 {
+  min-height: 100vh;
+  max-width: 90vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+}
+
+h1 {
+  font-size: 6.4rem;
+  text-align: center;
+  color: rgba(248, 42, 42, 0.873);
+  margin: 0 auto;
+}
+
+.redirect_url {
+  margin-top: 2rem;
+  border-radius: 0.6rem;
+  padding: 1.4rem 4rem;
+  color: #fff;
+  background: #147b14;
+  font-size: 1.5rem;
+}
+
+.redirect_url:hover {
+  background-color: #1daf1d;
+}
+
+/*# sourceMappingURL=404.css.map */

@@ -1,0 +1,90 @@
+
+{{ "article.css" | asset_url | stylesheet_tag  }}
+
+
+    <article class="article__section" id="article-section" >
+      <div class="article__container container">
+        <div class="article">
+          {% for block in section.blocks %}
+            {% case block.type  %}
+        
+              {% when 'article_title' %}
+              <div class="article__data">
+                <a href="{{ blog.url }}">{{ blog.title }}</a>
+                <h1 class="article__data-title">{{ article.title }}</h1>
+              </div>
+
+              {% when 'article_author' %}
+              {% if section.settings.enable_author %}
+                <div class="article__data">
+                  <p class="article__data-author">Author: {{ article.author }} | <time datetime="{{ article.published_at | date: "%b %d, %y" }}">{{article.published_at | date: "%b %d, %y" }}</time>
+                  </p> 
+                </div>
+            
+              {% endif %}
+              {% when 'featured_image' %}
+              <div class="article__image">
+                <img src="{{ article.image | image_url: width: 350 }}" loading="lazy" alt="{{ article.image.alt | escape }}">
+              </div>
+
+              {% when 'article_content' %}
+              <div class="article__content">
+                <p class="article__content-text"> {{ article.content }} </p>
+              </div>
+
+              {% else %}
+            {% endcase %}
+          {% endfor %}
+      
+        </div>
+      </div>
+    </article>
+ 
+
+
+
+{% schema %}
+{
+  "name": "Template Article",
+  "settings": [
+      {
+        "type": "checkbox",
+        "id": "enable_author",
+        "default": true,
+        "label": "Display Author Name"
+      }
+  ],
+
+  
+  "blocks": [
+  {
+    "name": "Title",
+    "type": "article_title",
+    "limit": 1
+  },
+
+  {
+    "name": "Author",
+    "type": "article_author",
+    "limit": 1
+  },
+
+  {
+    "name": "Published Date",
+    "type": "article_published_date",
+    "limit": 1
+  },
+
+  {
+    "name": "Thumbnail",
+    "type": "featured_image",
+    "limit": 2
+  },
+  {
+    "name": "Content",
+    "type": "article_content",
+    "limit": 1
+  }
+]
+}
+{% endschema %}
