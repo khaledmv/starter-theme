@@ -1,0 +1,38 @@
+ {{ 'cart-components.css' | asset_url | stylesheet_tag }}
+{% if cart.item_count > 0 %}
+    <form action="{{ routes.cart_url }}" method="post">
+      {% for item in cart.items %}
+      <div class="container">
+        <div class="cart">
+             <div class="cart__item">
+                <div class="cart__item-title">
+                  <img src="{{ item.image | image_url: width: 300 }}" alt="{{item.image.alt }}">
+                  <span>{{item.product.title}} </span>
+                  <span>{{item.variant}} </span>
+                  <a href="{{ item.url_to_remove }}">Remove</a>
+                </div>
+                <div class="cart__item-quantity">
+                  <span>{{item.quantity }}</span>
+                  <input type="number" min="1" name="updates[]" value="{{ item.quantity }}">
+                </div>
+                <div class="cart__item-price">
+                  {{ item.final_line_price | money }}
+                </div>
+             </div>
+             <div class="cart__checkout">
+              
+                <input type="submit" value="Update cart">
+                <input type="submit" name="checkout" value="Checkout">
+             </div>
+          </div>
+        </div>  
+       
+      {% endfor %}
+      
+    </form>
+  {% else %}
+    <div class="empty__cart">
+      <h1>Your Cart is empty</h1>
+      <a href="{{ routes.all_products_collection_url }}">Continue Shopping</a>
+    </div>
+{% endif %}

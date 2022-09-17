@@ -1,8 +1,8 @@
 {
-  "name": "Template Blog",
+  "name": "Template Cart",
   "sections": {
     "main": {
-      "type": "main-blog"
+      "type": "main-cart"
     }
   },
   "order": [

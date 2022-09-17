@@ -1,0 +1,30 @@
+@import 'variable';
+
+.cart{
+  display: grid;
+  grid-template-columns: 1fr;
+  &__item{
+    display: flex;
+    justify-content: space-around;
+    &-title{
+      display: flex;
+      align-items:center;
+      gap: 1rem;
+    }
+  }
+  &__checkout{
+    margin-top: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    & input{
+      padding: 1.4rem 4.6rem;
+      color:#fff;
+      background-color: $btn-color;
+      margin: .4rem;
+      border: none;
+      cursor: pointer;
+    }
+  }
+}

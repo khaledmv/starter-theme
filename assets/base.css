@@ -1,49 +1,17 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap");
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-}
+/* Error: Undefined variable.
+ *    ,
+ * 21 |   color:$text-color;
+ *    |         ^^^^^^^^^^^
+ *    '
+ *   src\scss\base.scss 21:9  root stylesheet */
 
-html {
-  font-size: 62.5%;
-  box-sizing: border-box;
-  scroll-behavior: smooth;
+body::before {
+  font-family: "Source Code Pro", "SF Mono", Monaco, Inconsolata, "Fira Mono",
+      "Droid Sans Mono", monospace, monospace;
+  white-space: pre;
+  display: block;
+  padding: 1em;
+  margin-bottom: 1em;
+  border-bottom: 2px solid black;
+  content: "Error: Undefined variable.\a    \2577 \a 21 \2502    color:$text-color;\d\a    \2502          ^^^^^^^^^^^\a    \2575 \a   src\\scss\\base.scss 21:9  root stylesheet";
 }
-
-body {
-  font-family: "Roboto", sans-serif;
-  font-size: 1.8rem;
-  color: var(--text-color);
-  line-height: 1.5;
-}
-
-ul, li {
-  list-style: none;
-}
-
-img {
-  max-width: 100%;
-  height: auto;
-}
-
-a {
-  text-decoration: none;
-}
-
-.hidden {
-  display: none;
-}
-
-section {
-  width: 100%;
-}
-
-.container {
-  margin: 0 auto;
-  width: min(90%, 1140px);
-}
-
-/*# sourceMappingURL=base.css.map */

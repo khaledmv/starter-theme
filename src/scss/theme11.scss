@@ -1,22 +1,6 @@
 
-:root{
-  //  ===========color=========
+//  ================= git rm --cache assets/*.css.map ===========
 
-  --text-color:hsl(0, 4%, 11%);
-
-  // =============typograpy========
-
-  --text-small:1.2rem;
-  --text-normal: 1.8rem;
-  --text-medium:2.4rem;
-  --text-large:3.2rem;
-
-  --header-small:3.8rem;
-  --header-midium:4.4rem;
-  --header-large:5.2rem;
-  --header--bigger:6.4rem;
-
-  // =================Bg==============
-}
-
+@import 'variable';
 @import 'base';
+@import 'utility';
