@@ -1,0 +1,30 @@
+.cart {
+  display: grid;
+  grid-template-columns: 1fr;
+}
+.cart__item {
+  display: flex;
+  justify-content: space-around;
+}
+.cart__item-title {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.cart__checkout {
+  margin-top: 4rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.cart__checkout input {
+  padding: 1.4rem 4.6rem;
+  color: #fff;
+  background-color: #5c6bc0;
+  margin: 0.4rem;
+  border: none;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=cart-components.css.map */

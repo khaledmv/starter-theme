@@ -54,14 +54,13 @@
               {{ option.name }}
             </label>
 
-            <select
-              id="Option{{ option.position }}"
-              name="options[{{ option.name | escape }}]">
-              {% for value in option.values %}
+            <select name="id">
+              {% for variant in product.variants %}
                 <option
-                  value="{{ value | escape }}"
-                  {% if option.selected_value == value %}selected="selected"{% endif %}>
-                    {{ value }}
+                  {% if variant == current_variant %}selected="selected"{% endif %}
+                  {% unless variant.available %}disabled="disabled"{% endunless %}
+                  value="{{ variant.id }}">
+                    {{ variant.title }}
                 </option>
               {% endfor %}
             </select>

@@ -1,6 +1,65 @@
 
+{{ 'components-blog.css' | asset_url  | stylesheet_tag  }}
+
+{{ blog.title }}
 
 
-{%- for article in blog.articles -%}
-    <h1><a href="{{ article.url}}}"> {{ article.title }}</a></h1>
-{%- endfor -%}  
+<section class="section blog__section">
+    <div class="container">
+        <div class="blog-title">
+            <h1>{{ blog.title }}</h1>
+        </div>
+        {% paginate blog.articles by section.settings.number_of_blog_posts %}
+            <div class="blog__article">
+                {% for article in blog.articles %}
+                    <div class="blog__card">
+                        <div class="blog__card_imgbox">
+                            {% if article.image %} 
+                               <a href="{{ article.url }}">  <img src="{{ article.image | image_url }}" loading="lazy" alt="{{ article.image.alt | escape }}"> </a>
+                            {% else %}
+                                {% assign image = 'lifestyle-2' %}
+                                <a href="{{ article.url }}">  {{ image | placeholder_svg_tag: 'plce_svg' }}</a>
+                                
+                            {% endif %}
+                        </div><!--blog__imgbox-->
+        
+                        <div class="blog__card_data">
+                            <h1 class="blog__card_data-title">
+                                <a href="{{ article.url }}"> {{article.title }} </a>
+                            </h1>
+                            {% if article.excerpt == blank %}
+                                <p class="blog__card_data-content">{{ article.content | strip_html | truncatewords: 15}}</p>
+                            {% else %}
+                                <p class="blog__card_data-content">{{ article.excerpt }}</p>
+                            {% endif %}
+                        </div> <!--blog__data-->
+                        
+                    </div> <!--blog__card-->
+                {% endfor %}
+            </div><!--blog__article-->
+
+            <div class="paginate">
+                {% render 'pagination', pagination: paginate %}
+            </div>
+        {% endpaginate %}
+    </div>
+</section>
+
+
+
+{% schema %}
+{
+    "name": "Blog",
+    "settings": [
+        {
+           "type": "range",
+            "id": "number_of_blog_posts",
+            "label": "Blog post size",
+            "default": 2,
+            "step":1,
+            "min": 1,
+            "max": 6
+        }
+    ]
+}
+{% endschema %}

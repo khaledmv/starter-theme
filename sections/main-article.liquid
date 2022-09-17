@@ -22,10 +22,18 @@
                 </div>
             
               {% endif %}
+
               {% when 'featured_image' %}
-              <div class="article__image">
-                <img src="{{ article.image | image_url: width: 350 }}" loading="lazy" alt="{{ article.image.alt | escape }}">
-              </div>
+              {% if article.image != blank  %}
+                <div class="article__image">
+                  <img src="{{ article.image | image_url: width: 350 }}" loading="lazy" alt="{{ article.image.alt | escape }}">
+                </div>
+              {% else %}
+                {% assign placeholder_image = 'lifestyle-2' %}
+                <div class="article__image">
+                  {{ placeholder_image | placeholder_svg_tag: "article__placeholder" }}
+                </div>
+              {% endif %}
 
               {% when 'article_content' %}
               <div class="article__content">
@@ -39,9 +47,59 @@
         </div>
       </div>
     </article>
- 
 
+    <section class="article__section comment-section container">
+      <div class="previous_next_buttons">
+        {% if blog.next_article %}
+            {{ 'Next post >>' | link_to: blog.next_article }}
+        {% endif %}
 
+        {% if blog.previous_article %}
+          {{ '<< Previous post' | link_to: blog.previous_article }}<br/> 
+        {% endif %}
+      </div>
+      <div class="comment">
+        {% paginate article.comments by 2 %}
+           
+              <div class="comment__data">
+                {% for comment in article.comments %}
+                  {{ comment.content }}
+                {% endfor %}
+              </div>
+           
+
+          {% render 'pagination', pagination:paginate %}
+        {% endpaginate %}
+        <div class="comment__box">
+          
+                {% if blog.comments_enabled? %}
+                {% form 'new_comment', article %}
+                {{ form.errors | default_errors }}
+              
+                        <div class="comment__user">
+                          <div class="from-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="from-input" placeholder="Type your name" name="comment[author]" value="{{ form.author }}">
+                          </div>
+                        
+                          <div class="from-group">
+                            <label for="email">Email</label>
+                            <input type="email" class="from-input" placeholder="Type your email" name="comment[email]" value="{{ form.email }}">
+                          </div>
+                        </div>
+                      
+                        <div class="from-group">
+                          <textarea rows="10" placeholder="Type your comment" class="from-input" name="comment[body]">{{ form.body }}</textarea>
+                        </div>
+                      
+                        <div class="submit">
+                          <input type="submit" class="btn btn-primary" value="Submit">
+                        </div>
+              {% endform %}
+            {% endif %} 
+        </div>
+      </div>
+    </section>
 
 {% schema %}
 {
