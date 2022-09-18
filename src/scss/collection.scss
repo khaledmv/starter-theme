@@ -1,0 +1,75 @@
+@import 'variable';
+
+.collection-grid{
+  width: 100%;
+  min-height: 100vh;
+  background-color: $bg-color;
+  padding: 6rem 1rem;
+}
+.tag-filter{
+  background-color: $bg-color;
+  padding: 4rem;
+  border: 2px solid $btn-color;
+  display: inline-block;
+  margin: 4rem;
+  & p {
+    color: $btn-color;
+  }
+  & .tag-filters__item{
+    background-color: $btn-color;
+    color:$text-color;
+    margin:2rem;
+    &.active{
+      background-color: $bg-color;
+
+    }
+  }
+}
+
+.filter-active{
+  background: rgba(0, 0, 0, 0.422);
+  position: relative;
+}
+
+.filter-active::before{
+ content: "Loading";
+ position:absolute;
+ left:50%;
+ top:50%;
+ transform: translate(-50%, -50%);
+ color: #fff;
+
+}
+
+
+.colletion__section{
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  gap: 5rem;
+}
+
+.product-bar{
+  display: grid;
+  justify-content: center;
+  grid-template-rows: max-content;
+  // grid-template-columns: repeat(auto-fit, minmax(20rem, 25rem));
+
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 25rem));
+  gap:3rem;
+  & h1{
+    font-size: $text-normal;
+  }
+}
+
+.filter-param{
+  margin-right: 5px;
+}
+
+.filter-group-display__list{
+  margin: 3rem 0;
+  border-bottom: 1px solid hsl(0, 0%, 50%);
+}
+
+.active-filters{
+  margin-bottom: 3rem;
+}
