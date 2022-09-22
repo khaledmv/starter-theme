@@ -1,301 +1,168 @@
 
 {{ 'collection.css' | asset_url | stylesheet_tag }}
+{{ 'components-product-model.css' | asset_url | stylesheet_tag }}
 
+<section class="collection-grid collection__overlay">
+  <div class="container colletion__section">
+  
+    <div class="filter-bar">
+      <form class="filter-form" id="filter-param-form">
 
-<div class="container">
- 
-  <div class="sort-by">
-    <p>Sort item</p>
-    <select id="sort-by">
-      {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
-    
-      {% for option in collection.sort_options %}
-        <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
-          {{ option.name }}
-        </option>
-      {% endfor %}
-    </select>
-  </div>
-</div>
-
-<div class="tag-filter">
-  <p>Tag filter</p>
-  {% if collection.all_tags.size > 0 %}
-  <ul class="tag-filters">
-    {% for tag in collection.all_tags %}
-      {% if current_tags contains tag %}
-        <li class="tag-filters__item">{{ tag | link_to_remove_tag: tag }}</li>
-      {% else %}
-        <li class="tag-filters__item active">{{ tag | link_to_add_tag: tag }}</li>
-      {% endif %}
-    {% endfor %}
-  </ul>
-{% endif %}
-</div>
-
-<div class="store_front-filter">
-  <p>Store front filter</p>
-  <form class="filter-form">
-    {%- for filter in collection.filters -%}
-      <details class="filter-group">
-        <summary class="filter-group-summary">
-          <div>
-            <span>{{ filter.label }}</span>
-  
-            {%- if filter.active_values.size > 0 -%}
-              <span>({{ filter.active_values.size }})</span>
-            {%- endif -%}
-          </div>
-        </summary>
-  
-        <div class="filter-group-display">
-          <div class="filter-group-display__header">
-            <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
-  
-            {%- if filter.active_values.size > 0 -%}
-              <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
-            {%- endif -%}
-          </div>
-  
-          {%- case filter.type -%}
-            {%- when 'boolean' or 'list' -%}
-              <ul class="filter-group-display__list">
-                {%- for filter_value in filter.values -%}
-                  <li class="filter-group-display__list-item">
-                    <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
-                    <input type="checkbox"
-                      name="{{ filter_value.param_name }}"
-                      value="{{ filter_value.value }}"
-                      id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
-                      {% if filter_value.active -%}checked{%- endif %}
-                      {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
-                    >{{ filter_value.label }}</label>
-                  </li>
-                {%- endfor -%}
-              </ul>
-  
-              <div class="filter-group-display__submit">
-                <input type="submit" value="Apply">
-              </div>
-
-            {%- when 'price_range' -%}
-              <div class="filter-group-display__price-range">
-                <div class="filter-group-display__price-range-from">
-                  <span>{{ cart.currency.symbol }}</span>
-  
-                  <input name="{{ filter.min_value.param_name }}"
-                    id="Filter-{{ filter.min_value.param_name }}"
-                    {% if filter.min_value.value -%}
-                      value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-                    {%- endif %}
-                    type="number"
-                    placeholder="0"
-                    min="0"
-                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                  >
-  
-                  <label for="Filter-{{ filter.min_value.param_name }}">From</label>
-                </div>
-                <div class="filter-group-display__price-range-to">
-                  <span>{{ cart.currency.symbol }}</span>
-  
-                  <input name="{{ filter.max_value.param_name }}"
-                    id="Filter-{{ filter.max_value.param_name }}"
-                    {% if filter.max_value.value -%}
-                      value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-                    {%- endif %}
-                    type="number"
-                    placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                    min="0"
-                    max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                  >
-  
-                  <label for="Filter-{{ filter.max_value.param_name }}">To</label>
-                </div>
-              </div>
-  
-              <div class="filter-group-display__submit">
-                <input type="submit" value="Apply">
-              </div>
-          {%- endcase -%}
-        </div>
-      </details>
-    {%- endfor -%}
-  
-    <div class="active-filters">
-      <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="active-filters__clear">Clear all</a>
-  
-      {%- for filter in collection.filters -%}
-        {%- if filter.type == "price_range" -%}
-          {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
-            <a class="active-filters__remove-filter" href="{{ filter.url_to_remove }}">
-              {%- assign min_value = filter.min_value.value | default: 0 -%}
-              {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
-              {{ min_value | money }} - {{ max_value | money }} X
-            </a>
-          {%- endif -%}
-        {%- else -%}
-          {%- for filter_value in filter.active_values -%}
-            <a class="active-filters__remove-filter" href="{{ filter_value.url_to_remove }}">
-              {{ filter.label }}: {{ filter_value.label }} X
-            </a>
-          {%- endfor -%}
-        {%- endif- %}
-      {%- endfor -%}
-    </div>
-  </form>
-  
-</div>
-
-
- <form class="filter-form">
-  <input type="hidden" name="q" value="{{ search.terms }}">
-
-  {%- for filter in search.filters -%}
-    <details class="filter-group">
-      <summary class="filter-group-summary">
-        <div>
-          <span>{{ filter.label }}</span>
-
-          {%- if filter.active_values.size > 0 -%}
-            <span>({{ filter.active_values.size }})</span>
-          {%- endif -%}
-        </div>
-      </summary>
-
-      <div class="filter-group-display">
-        <div class="filter-group-display__header">
-          <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
-
-          {%- if filter.active_values.size > 0 -%}
-            <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
-          {%- endif -%}
-        </div>
-
-        {%- case filter.type -%}
-          {%- when 'boolean' or 'list' -%}
-            <ul class="filter-group-display__list">
-              {%- for filter_value in filter.values -%}
-                <li class="filter-group-display__list-item">
-                  <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
-                  <input type="checkbox"
-                    name="{{ filter_value.param_name }}"
-                    value="{{ filter_value.value }}"
-                    id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
-                    {% if filter_value.active -%}checked{%- endif %}
-                    {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
-                  >{{ filter_value.label }}</label>
-                </li>
+        <div class="active-filters">
+          
+          {% if collection.filters > 0 %}
+          <a href="{{ collection.url }}?sort_by={{ collection.sort_by }}" class="active-filters__clear">Clear all</a>
+          {% endif %}
+      
+          {%- for filter in collection.filters -%}
+            {%- if filter.type == "price_range" -%}
+              {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+                <a class="active-filters__remove-filter" href="{{ filter.url_to_remove }}">
+                  {%- assign min_value = filter.min_value.value | default: 0 -%}
+                  {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
+                  {{ min_value | money }} - {{ max_value | money }} X
+                </a>
+              {%- endif -%}
+            {%- else -%}
+              {%- for filter_value in filter.active_values -%}
+                <a class="active-filters__remove-filter" href="{{ filter_value.url_to_remove }}">
+                  {{ filter.label }}: {{ filter_value.label }} X
+                </a>
               {%- endfor -%}
-            </ul>
+            {%- endif- %}
+          {%- endfor -%}
+        </div>
 
-            <div class="filter-group-display__submit">
-              <input type="submit" value="Apply">
-            </div>
-          {%- when 'price_range' -%}
-            <div class="filter-group-display__price-range">
-              <div class="filter-group-display__price-range-from">
-                <span>{{ cart.currency.symbol }}</span>
-
-                <input name="{{ filter.min_value.param_name }}"
-                  id="Filter-{{ filter.min_value.param_name }}"
-                  {% if filter.min_value.value -%}
-                    value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
-                  {%- endif %}
-                  type="number"
-                  placeholder="0"
-                  min="0"
-                  max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                >
-
-                <label for="Filter-{{ filter.min_value.param_name }}">From</label>
-              </div>
-              <div class="filter-group-display__price-range-to">
-                <span>{{ cart.currency.symbol }}</span>
-
-                <input name="{{ filter.max_value.param_name }}"
-                  id="Filter-{{ filter.max_value.param_name }}"
-                  {% if filter.max_value.value -%}
-                    value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
-                  {%- endif %}
-                  type="number"
-                  placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                  min="0"
-                  max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
-                >
-
-                <label for="Filter-{{ filter.max_value.param_name }}">To</label>
+        {%- for filter in collection.filters -%}
+          <div class="filter-group">
+            <div class="filter-group-summary">
+              <div>
+                <span>{{ filter.label }}</span>
+    
+                {%- if filter.active_values.size > 0 -%}
+                  <span>({{ filter.active_values.size }})</span> 
+                {%- endif -%}
               </div>
             </div>
+      
+            <div class="filter-group-display">
+              <div class="filter-group-display__header">
+                <span class="filter-group-display__header-selected">{{ filter.active_values.size }} selected</span>
+      
+                {%- if filter.active_values.size > 0 -%}
+                  <a href="{{ filter.url_to_remove }}" class="filter-group-display__header-reset">Reset</a>
+                {%- endif -%}
+              </div>
+      
+              {%- case filter.type -%}
+                {%- when 'boolean' or 'list' -%}
+                  <ul class="filter-group-display__list">
+                    {%- for filter_value in filter.values -%}
+                      <li class="filter-group-display__list-item filter__value">
+                        <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}">
 
-            <div class="filter-group-display__submit">
-              <input type="submit" value="Apply">
+                        <input type="checkbox"
+                          class="filter-param"
+                          name="{{ filter_value.param_name }}"
+                          value="{{ filter_value.value }}"
+                          id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                          {% if filter_value.active -%}checked{%- endif %}
+                          {% if filter_value.count == 0 and filter_value.active == false -%}disabled{%- endif %}
+                        >{{ filter_value.label }}</label>
+
+                       <span class="filter_value-count">{{ filter_value.count }}</span>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+      
+                {%- when 'price_range' -%}
+                  <div class="filter-group-display__price-range">
+                    <div class="filter-group-display__price-range-from">
+                      <span>{{ cart.currency.symbol }}</span>
+      
+                      <input name="{{ filter.min_value.param_name }}"
+                        id="Filter-{{ filter.min_value.param_name }}"
+                        {% if filter.min_value.value -%}
+                          value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                        {%- endif %}
+                        type="number"
+                        placeholder="0"
+                        min="0"
+                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      >
+      
+                      <label for="Filter-{{ filter.min_value.param_name }}">From</label>
+                    </div>
+                    <div class="filter-group-display__price-range-to">
+                      <span>{{ cart.currency.symbol }}</span>
+      
+                      <input name="{{ filter.max_value.param_name }}"
+                        id="Filter-{{ filter.max_value.param_name }}"
+                        {% if filter.max_value.value -%}
+                          value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                        {%- endif %}
+                        type="number"
+                        placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                        min="0"
+                        max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                      >
+      
+                      <label for="Filter-{{ filter.max_value.param_name }}">To</label>
+                    </div>
+                  </div>
+      
+                  <div  class="filter-group-display__submit">
+                    <input  type="submit" value="Apply">
+                  </div>
+              {%- endcase -%}
             </div>
-        {%- endcase -%}
-      </div>
-    </details>
-  {%- endfor -%}
-
-  <div class="active-filters">
-    <a href="{{ routes.search_url }}?sort_by={{ search.sort_by }}&q={{ search.terms }}" class="active-filters__clear">Clear all</a>
-
-    {%- for filter in search.filters -%}
-      {%- if filter.type == "price_range" -%}
-        {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
-          <a class="active-filters__remove-filter" href="{{ filter.url_to_remove }}">
-            {%- assign min_value = filter.min_value.value | default: 0 -%}
-            {%- assign max_value = filter.max_value.value | default: filter.range_max -%}
-            {{ min_value | money }} - {{ max_value | money }} X
-          </a>
-        {%- endif -%}
-      {%- else -%}
-        {%- for filter_value in filter.active_values -%}
-          <a class="active-filters__remove-filter" href="{{ filter_value.url_to_remove }}">
-            {{ filter.label }}: {{ filter_value.label }} X
-          </a>
+          </div>
         {%- endfor -%}
-      {%- endif- %}
-    {%- endfor -%}
-  </div>
-</form>
+      
 
-
-
-
-{% paginate collection.products by 20 %}
-  {% for product in collection.products %}
-    <div class="product">
-      <!-- <img src="{{ product.image | image_url: width: 400 }}" alt=""> -->
-      <a href="{{product.url}}"><img src="{{ product.featured_media | image_url: width: 400 }}" alt="{{ product.featured_media.alt }}"></a>
-      <h1><a href="{{product.url}}"> {{ product.title }}</a></h1>
+      </form>
     </div>
-  {% endfor %}
+  
+    <div class="product-bar">
+      {% paginate collection.products by 20 %}
+      {% for product in collection.products %}
+        <div class="product">
+          <!-- <img src="{{ product.image | image_url: width: 400 }}" alt=""> -->
+          <a href="{{product.url}}"><img src="{{ product.featured_media | image_url: width: 400 }}" alt="{{ product.featured_media.alt }}"></a>
+          <h1><a href="{{product.url}}"> {{ product.title }}</a></h1>
+          <div class="icon-box">
+            <div class="icon__eye" product-price="{{ product.price | money_without_trailing_zeros }}" product-handle="{{ product.handle }}" id="quick-view-icon"> {% render 'icon-eye' %} </div>
 
-  {{ paginate | default_pagination }}
-{% endpaginate %}
+          </div>
+          <div class="wishlist">
+            {%- render 'button-wishlist', product: product -%}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  
+    {{ paginate | default_pagination }}
+    {% endpaginate %}
+  </div>
+</section>
+
+<script src="{{ 'filter.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-modal.js' | asset_url }}" defer="defer"></script>
 
 
-<script>
-  Shopify.queryParams = {};
-
-  // Preserve existing query parameters
-  if (location.search.length) {
-    var params = location.search.substr(1).split('&');
-
-    for (var i = 0; i < params.length; i++) {
-      var keyValue = params[i].split('=');
-
-      if (keyValue.length) {
-        Shopify.queryParams[decodeURIComponent(keyValue[0])] = decodeURIComponent(keyValue[1]);
-      }
-    }
-  }
-
-  // Update sort_by query parameter on select change
-  document.querySelector('#sort-by').addEventListener('change', function(e) {
-    var value = e.target.value;
-
-    Shopify.queryParams.sort_by = value;
-    location.search = new URLSearchParams(Shopify.queryParams).toString();
-  });
-</script>
+<div class="modal__quick-view" id="quick-view">
+ 
+   <div class="product__container">
+    <div class="close" id="close">x</div>
+    <div class="product__data">
+      <div class="product__data-imgbox">
+       <img src="" alt="" id="productImg">
+      </div>
+      <div class="product__data-descbox">
+        <h1 id="productTitle"></h1>
+        <p id="productDes"></p>
+        <h3 id="productPrice"></h3>
+      </div>
+    </div>
+   </div>
+</div>

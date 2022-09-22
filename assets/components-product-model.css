@@ -1,0 +1,51 @@
+.modal__quick-view {
+  position: fixed;
+  width: 100%;
+  height: 100vh;
+  background: rgba(13, 30, 38, 0.478);
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 400ms;
+}
+
+.icon-eye {
+  cursor: pointer;
+}
+
+.modal__active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.product__container {
+  width: min(80%, 80rem);
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ebebeb;
+  position: relative;
+}
+.product__container .close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  cursor: pointer;
+  padding: 0.8rem 1.5rem;
+  background: #bdbdbd;
+  border-radius: 50%;
+  color: #5c6bc0;
+}
+.product__container .product__data {
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4rem;
+}
+
+/*# sourceMappingURL=components-product-model.css.map */
